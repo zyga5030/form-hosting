@@ -1,10 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Form Example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Form Redirect</title>
 </head>
 <body>
-   <script type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
-<zapier-interfaces-page-embed page-id='cm5he7iuh001412k4yp8mrmiq' no-background='false'  style='max-width: 2000px; height: 2000px;'></zapier-interfaces-page-embed>
+    <iframe 
+        src="https://docs.google.com/forms/d/e/1FAIpQLSda5EfDXMktHP80NvApEwaD8MJwhCsoK6PxSqeVCUUVniBBFg/viewform?embedded=true" 
+        width="100%" 
+        height="1000px" 
+        frameborder="0">
+    </iframe>
+
+    <script>
+        // Listen for form submission (best-effort method using URL changes)
+        const iframe = document.querySelector('iframe');
+        iframe.onload = () => {
+            const iframeWindow = iframe.contentWindow || iframe.contentDocument;
+            const redirectURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTjNBoIYl0Lvelsl8El2a-Hod8CtgJnfGBySiRrZAbI9a1sNA0t_TDUP2TQOucg0qFlUUOgA2yerMlK/pubhtml?gid=0&single=true";
+
+            // Check for URL change inside the iframe
+            setInterval(() => {
+                try {
+                    if (iframeWindow.location.href.includes('formResponse')) {
+                        // Redirect to your desired URL
+                        window.location.href = redirectURL;
+                    }
+                } catch (e) {
+                    // Handle cross-origin access error
+                }
+            }, 1000);
+        };
+    </script>
 </body>
 </html>
